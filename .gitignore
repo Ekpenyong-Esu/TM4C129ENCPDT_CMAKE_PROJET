@@ -139,3 +139,6 @@ rules.ninja
 *.bak
 *.swp
 *.tmp
+
+# IDE cache directories
+.cache/
