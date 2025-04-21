@@ -4,12 +4,13 @@
 // Modified for TM4C129ENCPDT which has different PLL configuration
 // than the TM4C123 series.
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "PLL.h"
 #include "driverlib/sysctl.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_sysctl.h"
-#include <stdbool.h>
-#include <stdint.h>
+
 
 // The System Clock Options for TM4C129ENCPDT
 #define CRYSTAL_FREQ 25000000 // 25MHz crystal (common on TM4C129 boards)

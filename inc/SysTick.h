@@ -5,9 +5,9 @@
 // of 10 milliseconds using busy wait.
 // Modified for TM4C129ENCPDT which supports up to 120 MHz
 
-#include "driverlib/sysctl.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "driverlib/sysctl.h"
 
 // Initialize SysTick with busy wait running at bus clock.
 void SysTick_Init(void);

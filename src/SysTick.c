@@ -5,11 +5,12 @@
 // of 10 milliseconds using busy wait.
 // Modified for TM4C129ENCPDT which supports up to 120 MHz
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "driverlib/systick.h"
 #include "driverlib/sysctl.h"
 #include "inc/hw_memmap.h"
-#include <stdbool.h>
-#include <stdint.h>
+
 
 // NVIC registers for SysTick
 #define NVIC_ST_CTRL_R (*((volatile uint32_t *)0xE000E010))

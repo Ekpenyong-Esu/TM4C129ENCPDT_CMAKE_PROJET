@@ -9,7 +9,7 @@
 *.o
 *.ko
 *.obj
-*.elf
+# *.elf
 
 # Linker output
 *.ilk
@@ -98,7 +98,7 @@ build/
 
 ### TM4C Specific ###
 # Binary and output files specific to TM4C microcontrollers
-*.bin
+# *.bin
 *.axf
 
 # OpenOCD debug files
@@ -110,7 +110,7 @@ swo*.log
 
 # TivaWare SDK downloaded files
 downloads/tivaware_extracted/
-libraries/TivaWare/
+# libraries/TivaWare/
 
 # Ninja build files
 .ninja_*
@@ -118,7 +118,7 @@ build.ninja
 rules.ninja
 
 # Custom build artifacts
-TM4C129ENCPDT.svd
+# TM4C129ENCPDT.svd
 
 # Eclipse CDT-specific files (if using Eclipse)
 .cproject

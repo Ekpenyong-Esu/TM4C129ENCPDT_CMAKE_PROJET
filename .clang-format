@@ -6,6 +6,9 @@ TabWidth: 4
 UseTab: Never
 ColumnLimit: 100
 
+# Disable include sorting for TM4C projects
+SortIncludes: false
+
 # Brackets
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -68,7 +71,6 @@ PenaltyBreakString: 1000
 PenaltyExcessCharacter: 1000000
 PenaltyReturnTypeOnItsOwnLine: 60
 PointerAlignment: Right
-SortIncludes: true
 SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
