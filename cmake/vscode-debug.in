@@ -14,13 +14,14 @@
             "configFiles": ["@OPENOCD_CFG@"],
             "searchDir": [],
             "runToEntryPoint": "main",
-            // "showDevDebugOutput": "raw",
+            "showDevDebugOutput": "parsed",
             "overrideLaunchCommands": [
                 "interpreter-exec console \"monitor halt\"",
                 "-target-download",
                 "-enable-pretty-printing"
             ],
-            "svdFile": "./tm4c123gh6pm.svd",
+            "svdFile": "${workspaceRoot}/TM4C129ENCPDT.svd",
+            "device": "TM4C129ENCPDT"
         }
     ]
 }

@@ -1,0 +1,32 @@
+# ARM cross compilation configuration for TM4C129ENCPDT project
+# This configuration helps Clang find standard headers and project headers
+
+CompileFlags:
+  Add:
+    # ARM cross-compiler standard include directories - where stdio.h is found
+    - "-I/usr/lib/gcc/arm-none-eabi/13.2.1/include"
+    - "-I/usr/lib/gcc/arm-none-eabi/13.2.1/include-fixed"
+    - "-I/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/include"
+
+    # Project-specific includes
+    - "-I/home/mahonri/Desktop/TM4C129ENCPDT_CMAKE_PROJET/inc"
+    - "-I/home/mahonri/Desktop/TM4C129ENCPDT_CMAKE_PROJET/libraries/TivaWare"
+
+    # Target and compilation flags to match your build settings
+    - "-mcpu=cortex-m4"
+    - "-mthumb"
+    - "-mfpu=fpv4-sp-d16"
+    - "-mfloat-abi=hard"
+    - "-DPART_TM4C129ENCPDT"
+    - "-DTARGET_IS_TM4C129_RA2"
+    - "-std=c11"
+
+    # Critical flag: Tell clangd this is embedded ARM code, not host code
+    # This is essential for finding stdlib headers correctly
+    - "--target=arm-none-eabi"
+
+# Configure diagnostics to ignore certain warnings/errors common in embedded code
+Diagnostics:
+  Suppress:
+    - "-Wunused-parameter"
+    - "-Wmissing-prototypes"

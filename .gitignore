@@ -95,3 +95,47 @@ _deps
 
 # CMake build directory
 build/
+
+### TM4C Specific ###
+# Binary and output files specific to TM4C microcontrollers
+*.bin
+*.axf
+
+# OpenOCD debug files
+*.cfg.old
+openocd.log
+
+# SWO (Serial Wire Output) log files
+swo*.log
+
+# TivaWare SDK downloaded files
+downloads/tivaware_extracted/
+libraries/TivaWare/
+
+# Ninja build files
+.ninja_*
+build.ninja
+rules.ninja
+
+# Custom build artifacts
+TM4C129ENCPDT.svd
+
+# Eclipse CDT-specific files (if using Eclipse)
+.cproject
+.project
+.settings/
+
+# Build artifact directories that might be in different locations
+**/Debug/
+**/Release/
+**/build-*/
+
+# Keep your custom linker scripts
+!tm4c129encpdt.ld
+!*.ld
+
+# Various IDE and editor backup files
+*~
+*.bak
+*.swp
+*.tmp

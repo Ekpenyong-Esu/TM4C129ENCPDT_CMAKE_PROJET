@@ -6,21 +6,22 @@
     "configurations": [
         {
             "cwd": "${workspaceRoot}",
-            "executable": "./build/Test.elf",
-            "name": "Debug with OpenOCD",
+            "executable": "/home/mahonri/Desktop/TM4C129ENCPDT_CMAKE_PROJET/build/TM4C129ENCPDT.elf",
+            "name": "TM4C129ENCPDT",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "openocd",
-            "configFiles": ["./openocd.cfg"],
+            "configFiles": ["/home/mahonri/Desktop/TM4C129ENCPDT_CMAKE_PROJET/openocd.cfg"],
             "searchDir": [],
             "runToEntryPoint": "main",
-            // "showDevDebugOutput": "raw",
+            "showDevDebugOutput": "parsed",
             "overrideLaunchCommands": [
                 "interpreter-exec console \"monitor halt\"",
                 "-target-download",
                 "-enable-pretty-printing"
             ],
-            "svdFile": "./tm4c123gh6pm.svd",
+            "svdFile": "${workspaceRoot}/TM4C129ENCPDT.svd",
+            "device": "TM4C129ENCPDT"
         }
     ]
 }

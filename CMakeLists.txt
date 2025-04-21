@@ -8,21 +8,63 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/arm-none-eabi-gcc.cmake)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
 
 # Setup project, output, and linker files
-project(Test)
+project(TM4C129ENCPDT)
 set(EXECUTABLE ${PROJECT_NAME}.elf)
-set(LINKER_FILE ${CMAKE_SOURCE_DIR}/tm4c123gh6pm.ld)
+set(LINKER_FILE ${CMAKE_SOURCE_DIR}/tm4c129encpdt.ld)
 set(TIVAWARE_DIR ${CMAKE_SOURCE_DIR}/libraries/TivaWare)
 
 enable_language(C ASM)
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
+
+# Common compiler options for both the application and driverlib
+set(COMMON_COMPILE_OPTIONS
+    -mcpu=cortex-m4
+    -mthumb
+    -mfpu=fpv4-sp-d16
+    -mfloat-abi=hard
+    -ffunction-sections
+    -fdata-sections
+)
+
+# Build TivaWare driverlib and include CPU driver
+file(GLOB DRIVERLIB_SOURCES 
+    ${TIVAWARE_DIR}/driverlib/*.c
+    ${TIVAWARE_DIR}/driverlib/cpu.c
+)
+
+add_library(driverlib STATIC ${DRIVERLIB_SOURCES})
+
+target_include_directories(driverlib PRIVATE
+    ${TIVAWARE_DIR}
+)
+
+target_compile_definitions(driverlib PRIVATE
+    -DPART_TM4C129ENCPDT
+    -DTARGET_IS_TM4C129_RA2
+)
+
+# Apply the common compiler options to driverlib
+target_compile_options(driverlib PRIVATE
+    ${COMMON_COMPILE_OPTIONS}
+    -O2  # Optimize for speed
+)
+
+# Add CPU assembly file for intrinsics
+if(EXISTS "${TIVAWARE_DIR}/driverlib/cpu.asm")
+    target_sources(driverlib PRIVATE ${TIVAWARE_DIR}/driverlib/cpu.asm)
+endif()
+if(EXISTS "${TIVAWARE_DIR}/driverlib/cpu.s")
+    target_sources(driverlib PRIVATE ${TIVAWARE_DIR}/driverlib/cpu.s)
+endif()
 
 set(APP_SRC
     src/startup.c
     src/main.c
     src/PLL.c
     src/SysTick.c
+
 )
 
 add_executable(${EXECUTABLE} ${APP_SRC})
@@ -35,26 +77,21 @@ target_include_directories(${EXECUTABLE} PRIVATE
 
 # List of compiler defines, prefix with -D compiler option
 target_compile_definitions(${EXECUTABLE} PRIVATE
-    -DPART_TM4C123GH6PM
-    -DTARGET_IS_TM4C123_RB1
+    -DPART_TM4C129ENCPDT
+    -DTARGET_IS_TM4C129_RA2
 )
 
 target_link_libraries(${EXECUTABLE} PUBLIC
+    driverlib
     c
     m
     rdimon
     gcc
 )
 
-# Compiler options
+# Compiler options using the common options
 target_compile_options(${EXECUTABLE} PRIVATE
-    -mcpu=cortex-m4
-    -mthumb
-    -mfpu=fpv4-sp-d16
-    -mfloat-abi=hard
-    # Optimizations
-    -ffunction-sections
-    -fdata-sections
+    ${COMMON_COMPILE_OPTIONS}
     -O0
     -g3
     # Compile warnings

@@ -66,6 +66,43 @@ ninja flash
 ```
 
 
+## Debugging with Register Watching
+
+### Using the Debug Console
+When in a debug session, you can use these GDB commands in the Debug Console:
+
+```
+info registers        # Show all CPU registers
+p/x $r0              # Print register R0 in hex format
+p/x $pc              # Print program counter
+p/x $sp              # Print stack pointer
+p/x *(uint32_t*)0x400FE608  # Print value at specific memory address (e.g., RCGCGPIO)
+```
+
+### Using Watch Expressions
+1. Click the "WATCH" panel in the debug view
+2. Click the "+" icon
+3. Add register names with $ prefix:
+   - `$r0`, `$r1`, etc. for general purpose registers
+   - `$pc` for program counter
+   - `$sp` for stack pointer
+
+### Using SVD File for Peripheral Register Viewing
+This project includes the TM4C129ENCPDT.svd file which enables viewing of all peripheral registers:
+
+1. When debugging, open the "PERIPHERALS" panel in the debug view
+2. Expand the peripheral you're interested in (e.g., GPIOF)
+3. All registers for that peripheral will be displayed with current values
+
+### TivaWare Register Access
+For accessing specific peripheral registers using the TivaWare naming scheme:
+```c
+// Example to read GPIO port F data register
+#include "inc/hw_memmap.h"
+volatile uint32_t* gpioDataReg = (volatile uint32_t*)(GPIO_PORTF_BASE + GPIO_O_DATA + (0xFF << 2));
+uint32_t value = *gpioDataReg;
+```
+
 ## Resources
 
 - [Setup for EE445L labs on Linux by Josh Minor](https://github.com/jishminor/ee445l-linux)

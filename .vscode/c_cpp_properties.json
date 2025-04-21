@@ -7,7 +7,7 @@
             ],
             "defines": [],
             "compilerPath": "/usr/bin/arm-none-eabi-gcc",
-            "cStandard": "gnu99",
+            "cStandard": "gnu11",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "gcc-arm",
             "configurationProvider": "ms-vscode.cmake-tools",
