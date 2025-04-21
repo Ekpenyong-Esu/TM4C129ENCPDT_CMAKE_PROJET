@@ -1,115 +1,41 @@
-# TM4C CMake Project
-Simple template for a TM4C project compiled with CMake. The goal is to use this with VSCode and
-the Cortex-Debug extension to avoid Keil. This should also work with CLion.
+![act-logo](https://raw.githubusercontent.com/wiki/nektos/act/img/logo-150.png)
 
-## Getting Started
-### Linux Dependencies:
-```
-sudo apt install gcc-arm-none-eabi gdb-multiarch binutils-multiarch cmake
-sudo apt install openocd
-sudo apt install lm4flash
-```
-`lm4flash` is optional -- the flash script is configured to flash with OpenOCD for Windows compatibility.
+# Overview [![push](https://github.com/nektos/act/workflows/push/badge.svg?branch=master&event=push)](https://github.com/nektos/act/actions) [![Join the chat at https://gitter.im/nektos/act](https://badges.gitter.im/nektos/act.svg)](https://gitter.im/nektos/act?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Go Report Card](https://goreportcard.com/badge/github.com/nektos/act)](https://goreportcard.com/report/github.com/nektos/act) [![awesome-runners](https://img.shields.io/badge/listed%20on-awesome--runners-blue.svg)](https://github.com/jonico/awesome-runners)
 
+> "Think globally, `act` locally"
 
-### Windows Dependencies:
-Install the following dependencies:
+Run your [GitHub Actions](https://developer.github.com/actions/) locally! Why would you want to do this? Two reasons:
 
-- [CMake](https://cmake.org/download/)
-  - Make sure to select add to path in the installer (either user or system path will work)
-- [Ninja](https://ninja-build.org/) (or make)
-  - Download latest ninja-win.zip from [the official Github](https://github.com/ninja-build/ninja/releases)
-  - Copy `ninja.exe` to `C:\Program Files\CMake\bin\` (Or elsewhere in your path)
-- [GNU Arm Embedded Toolchain](https://developer.arm.com/downloads/-/gnu-rm) (get latest `gcc-arm-none-eabi-*-win32.exe`)
-  - Make sure to select "Add path to environment variable" at the last step
-- [OpenOCD](https://openocd.org/)
-  - Download [Windows release from Github](https://github.com/openocd-org/openocd/releases/tag/v0.12.0).
-    - v0.11.0 and v0.12.0 worked for me. Earlier versions did not work, future versions probably should work.
-  - Extract the contents of `openocd-v0.12.0-i686-w64-mingw32.tar.gz` to `C:\openocd-v0.12.0` (7-Zip can be used to extract .tar.gz archives on Windows)
-  - Add `C:\openocd-v0.12.0\bin` to your path.
-- [Visual Studio Code](https://code.visualstudio.com/)
+- **Fast Feedback** - Rather than having to commit/push every time you want to test out the changes you are making to your `.github/workflows/` files (or for any changes to embedded GitHub actions), you can use `act` to run the actions locally. The [environment variables](https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables) and [filesystem](https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#filesystems-on-github-hosted-runners) are all configured to match what GitHub provides.
+- **Local Task Runner** - I love [make](<https://en.wikipedia.org/wiki/Make_(software)>). However, I also hate repeating myself. With `act`, you can use the GitHub Actions defined in your `.github/workflows/` to replace your `Makefile`!
 
+> [!TIP]
+> **Now Manage and Run Act Directly From VS Code!**<br/>
+> Check out the [GitHub Local Actions](https://sanjulaganepola.github.io/github-local-actions-docs/) Visual Studio Code extension which allows you to leverage the power of `act` to run and test workflows locally without leaving your editor.
 
-### Set up Visual Studio Code:
-Install vscode from [Microsoft](https://code.visualstudio.com/)
+# How Does It Work?
 
-Install these extensions:
-- C/C++
-- CMake
-- CMake Tools
-- Cortex-Debug
+When you run `act` it reads in your GitHub Actions from `.github/workflows/` and determines the set of actions that need to be run. It uses the Docker API to either pull or build the necessary images, as defined in your workflow files and finally determines the execution path based on the dependencies that were defined. Once it has the execution path, it then uses the Docker API to run containers for each action based on the images prepared earlier. The [environment variables](https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables) and [filesystem](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#file-systems) are all configured to match what GitHub provides.
 
-When you first open this project in VSCode, you will need to set the "CMake Kit" to `TM4C Toolchain`
-to select the installed arm-gcc compiler and set the CMake Generator to `Ninja`. You will also need
-to set the build variant (`Debug`) and build target (`Test.elf`). Once this has been done, you
-should be able run `CMake: Configure` and `CMake: Build` (`ctrl-shift-P` to open command palette).
-The shortcut `ctrl-shift-B` can be used to run the default build task (set in `.vscode/tasks.json`).
+Let's see it in action with a [sample repo](https://github.com/cplee/github-actions-demo)!
 
+![Demo](https://raw.githubusercontent.com/wiki/nektos/act/quickstart/act-quickstart-2.gif)
 
-### Command Line Development
-This project will work without VSCode if you want to use another text editor. To compile and flash
-from the command line:
-```
-mkdir build
-cd build
-cmake ..
-make Test.elf
-make flash
-```
-Or on Windows:
-```
-mkdir build
-cd build
-cmake -G "Ninja" ..
-ninja Test.elf
-ninja flash
-```
+# Act User Guide
 
+Please look at the [act user guide](https://nektosact.com) for more documentation.
 
-## Debugging with Register Watching
+# Support
 
-### Using the Debug Console
-When in a debug session, you can use these GDB commands in the Debug Console:
+Need help? Ask on [Gitter](https://gitter.im/nektos/act)!
 
-```
-info registers        # Show all CPU registers
-p/x $r0              # Print register R0 in hex format
-p/x $pc              # Print program counter
-p/x $sp              # Print stack pointer
-p/x *(uint32_t*)0x400FE608  # Print value at specific memory address (e.g., RCGCGPIO)
-```
+# Contributing
 
-### Using Watch Expressions
-1. Click the "WATCH" panel in the debug view
-2. Click the "+" icon
-3. Add register names with $ prefix:
-   - `$r0`, `$r1`, etc. for general purpose registers
-   - `$pc` for program counter
-   - `$sp` for stack pointer
+Want to contribute to act? Awesome! Check out the [contributing guidelines](CONTRIBUTING.md) to get involved.
 
-### Using SVD File for Peripheral Register Viewing
-This project includes the TM4C129ENCPDT.svd file which enables viewing of all peripheral registers:
+## Manually building from source
 
-1. When debugging, open the "PERIPHERALS" panel in the debug view
-2. Expand the peripheral you're interested in (e.g., GPIOF)
-3. All registers for that peripheral will be displayed with current values
-
-### TivaWare Register Access
-For accessing specific peripheral registers using the TivaWare naming scheme:
-```c
-// Example to read GPIO port F data register
-#include "inc/hw_memmap.h"
-volatile uint32_t* gpioDataReg = (volatile uint32_t*)(GPIO_PORTF_BASE + GPIO_O_DATA + (0xFF << 2));
-uint32_t value = *gpioDataReg;
-```
-
-## Resources
-
-- [Setup for EE445L labs on Linux by Josh Minor](https://github.com/jishminor/ee445l-linux)
-- [From Zero to main() series on Interrupt](https://interrupt.memfault.com/tag/zero-to-main/)
-- [Visual Studio Code for C/C++ with ARM Cortex-M by Erich Styger, parts 1](https://mcuoneclipse.com/2021/05/01/visual-studio-code-for-c-c-with-arm-cortex-m-part-1/) and [2](https://mcuoneclipse.com/2021/05/04/visual-studio-code-for-c-c-with-arm-cortex-m-part-2/)
-- [cubemx.cmake](https://github.com/patrislav1/cubemx.cmake)
-- [How to cross-compile for embedded with CMake like a champ](https://kubasejdak.com/how-to-cross-compile-for-embedded-with-cmake-like-a-champ)
-    - [platform's CMake arm-none-eabi-gcc toolchain file](https://gitlab.com/embeddedlinux/libs/platform/-/blob/master/lib/baremetal-arm/arm-none-eabi-gcc.cmake)
-- [Getting Started with the TI Stellaris LaunchPad on Linux](https://www.jann.cc/2012/12/11/getting_started_with_the_ti_stellaris_launchpad_on_linux.html)
-- [cortex-debug for VSCode](https://github.com/Marus/cortex-debug/wiki)
+- Install Go tools 1.20+ - (<https://golang.org/doc/install>)
+- Clone this repo `git clone git@github.com:nektos/act.git`
+- Run unit tests with `make test`
+- Build and install: `make install`
