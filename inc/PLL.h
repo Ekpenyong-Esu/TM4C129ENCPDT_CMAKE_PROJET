@@ -12,12 +12,12 @@
 void PLL_Init(uint32_t freq);
 
 // New frequency options for TM4C129ENCPDT
-#define Bus120MHz    0  // 120 MHz (maximum for TM4C129)
-#define Bus100MHz    1  // 100 MHz
-#define Bus80MHz     2  // 80 MHz
-#define Bus50MHz     3  // 50 MHz
-#define Bus40MHz     4  // 40 MHz 
-#define Bus25MHz     5  // 25 MHz (bypass PLL and use crystal directly)
+#define Bus120MHz 0 // 120 MHz (maximum for TM4C129)
+#define Bus100MHz 1 // 100 MHz
+#define Bus80MHz 2  // 80 MHz
+#define Bus50MHz 3  // 50 MHz
+#define Bus40MHz 4  // 40 MHz
+#define Bus25MHz 5  // 25 MHz (bypass PLL and use crystal directly)
 
 // Legacy frequency options for compatibility with TM4C123 code
 // These will be mapped to appropriate TM4C129 frequencies
@@ -32,7 +32,3 @@ void PLL_Init(uint32_t freq);
 #define Bus28_571MHz Bus25MHz
 #define Bus26_667MHz Bus25MHz
 #define Bus25_000MHz Bus25MHz
-
-
-
-

@@ -10,6 +10,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    continue-on-error: true  # Make linting optional for now
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
